@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseUUIDPipe, Query } from '@nestjs/common';
-import { ORDERS_SERVICE } from 'src/config';
-import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { CreateOrderDto, UpdateOrderDto } from './dto';
 import { catchError } from 'rxjs';
-import { PaginationDto } from 'src/common/dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseUUIDPipe, Query } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { ORDERS_SERVICE } from 'src/config';
+import { CreateOrderDto, OrderPaginationDto, UpdateOrderDto } from './dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -17,8 +16,8 @@ export class OrdersController {
   }
   
   @Get()
-  findAll(@Query() paginationDto:PaginationDto) {
-    return this.ordersClient.send('findAllOrders',paginationDto)
+  findAll(@Query() orderPaginationDto:OrderPaginationDto) {
+    return this.ordersClient.send('findAllOrders',orderPaginationDto)
   }
 
   @Get(':id')
