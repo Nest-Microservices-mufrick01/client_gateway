@@ -22,6 +22,9 @@ export class OrdersController {
   @Get()
   findAll(@Query() orderPaginationDto:OrderPaginationDto) {
     return this.natsClient.send('findAllOrders',orderPaginationDto)
+    .pipe(
+      catchError(err=>{throw new RpcException(err)})
+    )
   }
 
   @Get('id/:id')
@@ -36,6 +39,9 @@ export class OrdersController {
   findAllByStatus(@Param() statusDto: StatusDto, @Query() paginationDto:PaginationDto) {
 
     return this.natsClient.send('findAllOrders',{...paginationDto,status:statusDto.status})
+      .pipe(
+        catchError(err=>{throw new RpcException(err)})
+      )
   }
 
   @Patch(':id')
